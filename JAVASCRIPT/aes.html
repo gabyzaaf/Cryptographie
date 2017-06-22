@@ -1,0 +1,135 @@
+<html>
+
+<head>
+
+<title>AES</title>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>	
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
+
+</head>
+
+<body>
+
+<br>
+<div class="container">
+  <H2 align="center"><p class="bg-primary">Encrypt Message AES</p></H2>
+</div>
+
+<br/>
+
+<center>
+<table>
+<div class="row">
+<tr>
+  <div class="col-lg-6">
+    <div class="input-group">
+      <input type="text" id="encryptid" class="form-control" placeholder="Message...">
+      <span class="input-group-btn">
+        <button class="btn btn-secondary" type="button" onclick="encryptfonction();" >encrypted</button>
+	 </span>
+    </div>
+  </div>
+</tr>
+  <br/>
+<tr>
+  <div class="col-lg-6">
+    <div class="input-group">
+      <input type="text" id="decryptid" class="form-control" placeholder="Key...">
+      <span class="input-group-btn">
+        <button class="btn btn-secondary" type="button" onclick="decryptfonction();" >decrypted</button>
+	  </span>
+    </div>
+  </div>
+</tr>
+  <br/>
+<tr>
+  <div class="col-lg-6">
+    <div class="input-group">
+      <input type="text" id="decryptCid" class="form-control" placeholder="KeyConvert...">
+      <span class="input-group-btn">
+        <button class="btn btn-secondary" type="button" onclick="decryptCfonction();" >Convert KEY decrypted</button>
+	  </span>
+    </div>
+  </div>
+</div>
+</tr>
+</table>
+
+<br>
+
+<br>
+
+<table border="1" style="border-radius: 5px;width: 50%;margin: 0px auto;float: none; text-align: center;">
+<tr>
+<th>Réponse du cryptage</th>
+</tr>
+<tr>
+<td>
+<label>encrypted :</label>
+<div id="demo1"></div>
+</td>
+</tr>
+<br>
+<tr>
+<td>
+<label>decrypted :</label>
+<div id="demo2"></div>
+</td>
+</tr>
+<br>
+<tr>
+<td>
+<label>Actual Message :</label>
+<div id="demo3"></div>
+</td>
+</tr>
+</table>
+
+</center>
+
+<script>
+var decrypted;
+
+function encryptfonction()
+{
+	if(document.getElementById("encryptid").value != "")
+	{
+		var encrypted = CryptoJS.AES.encrypt(document.getElementById("encryptid").value, "Secret Passphrase");
+		document.getElementById("demo1").innerHTML = encrypted;
+	}else{
+		alert("Vous devez remplir le champ !");
+	}
+}
+
+function decryptfonction()
+{
+	if(document.getElementById("decryptid").value != "")
+	{
+		decrypted = CryptoJS.AES.decrypt(document.getElementById("decryptid").value, "Secret Passphrase");
+		document.getElementById("demo2").innerHTML = decrypted;
+	}else{
+		alert("Vous devez remplir le champ !");
+	}
+}
+
+function decryptCfonction()
+{
+	if(document.getElementById("decryptCid").value != "")
+	{
+		document.getElementById("demo3").innerHTML = decrypted.toString(CryptoJS.enc.Utf8);
+	}else{
+		alert("Vous devez remplir le champ !");
+	}
+}
+
+
+
+//document.getElementById("demo3").innerHTML = decrypted.toString(CryptoJS.enc.Utf8);
+
+</script>
+
+</body>
+
+</html>
