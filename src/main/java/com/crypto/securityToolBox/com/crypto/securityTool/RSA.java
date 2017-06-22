@@ -10,10 +10,16 @@ import java.security.PublicKey;
 import javax.crypto.Cipher;
 
 public class RSA {
-    private KeyPair keyPair;
-    private KeyPair keyPairCli;
+    private static KeyPair keyPair;
+    private static KeyPair keyPairCli;
+    private static int keySize = 1024;
 
-    RSA() {
+    public RSA() {
+        this(keySize);
+    }
+
+    public RSA(int _keySize) {
+        keySize = _keySize;
         try {
             keyPair = buildKeyPair();
             keyPairCli = buildKeyPair();
@@ -31,7 +37,7 @@ public class RSA {
     }
 
     public static KeyPair buildKeyPair() throws NoSuchAlgorithmException {
-        final int keySize = 1024;
+
         KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
         keyPairGenerator.initialize(keySize);
         return keyPairGenerator.genKeyPair();
