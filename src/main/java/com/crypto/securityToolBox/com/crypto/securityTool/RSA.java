@@ -1,11 +1,14 @@
 package com.crypto.securityToolBox.com.crypto.securityTool;
 
 
+import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 
 import javax.crypto.Cipher;
 
@@ -28,12 +31,14 @@ public class RSA {
         }
     }
 
-    public PublicKey getPublicKey() {
-        return keyPair.getPublic();
+    public BigInteger getPublicKey() {
+        RSAPublicKey pubKey = (RSAPublicKey) keyPair.getPublic();
+        return pubKey.getModulus();
     }
 
-    public PrivateKey getPrivateKeyToCli() {
-        return keyPairCli.getPrivate();
+    public BigInteger getPrivateKeyToCli() {
+        RSAPrivateKey privKey = (RSAPrivateKey) keyPair.getPrivate();
+        return privKey.getModulus();
     }
 
     public static KeyPair buildKeyPair() throws NoSuchAlgorithmException {
