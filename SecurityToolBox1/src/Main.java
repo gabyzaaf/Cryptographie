@@ -1,5 +1,6 @@
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
+import java.util.Scanner;
 
 
 public class Main {
@@ -40,7 +41,7 @@ public class Main {
 	public static void shouldTestAES(){
 		final String secretKey = "cestsecret";
 	     
-	    String originalString = "je suis ZAZA encrypt";
+	    String originalString = "je suis ZAZA encrypted";
 	    AES aes = new AES();
 	    
 	    String encryptedString = null;
@@ -48,9 +49,9 @@ public class Main {
 	    try {
 			encryptedString = aes.encrypt(originalString, secretKey);
 			decryptedString = aes.decrypt(encryptedString, secretKey);
-			 System.out.println(originalString);
+			 /*System.out.println(originalString);
 			 System.out.println(encryptedString);
-			 System.out.println(decryptedString);
+			 System.out.println(decryptedString);*/
 	    } catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -61,18 +62,30 @@ public class Main {
 	}
 	
 	public static void main(String[] args){
+		String encryptedString = null;
 		try {
-			Sha sha256 = new Sha();
-			System.out.println(sha256.createTheHashFromString("Gabriel"));
-			System.out.println(sha256.createTheHashFromFile("C:\\Users\\CLAPERT\\Documents\\workstation\\SecurityToolBox\\mdp.txt"));
-			shouldTestAES();
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Scanner scanner = new Scanner(System.in);
+			AES aes = new AES();
+			System.out.println("Bonjour veuillez saisir votre mot de passe : ");
+			String password = scanner.next();
+			System.out.println("Bonjour veuillez saisir votre clée  : ");
+			String key = scanner.next();
+			String encryptByString = aes.encrypt(password, key);
+			encryptedString = aes.readFile("fichiercode.txt");
+			if(encryptByString.equals(encryptedString)){
+				System.out.println("OK");
+				System.out.println(aes.decrypt(encryptedString, key));
+			}else{
+				System.out.println("KO enryption 1 ===> "+encryptByString+" - "+encryptByString.length());
+				System.out.println("KO enryption 2 ===> "+encryptedString+" - "+encryptedString.length());
+			}
+			//aes.decrypt(encryptedString, key);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		
 	}
 	
 }
