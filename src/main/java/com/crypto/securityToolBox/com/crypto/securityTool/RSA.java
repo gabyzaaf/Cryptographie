@@ -1,13 +1,10 @@
-package com.crypto.securityToolBox.com.crypto.securityTool;
+package com.esgi.API;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
 
-/**
- * Created by nicop on 6/21/17.
- */
 public class RSA {
-    private BigInteger n, d, e;
+    private BigInteger n, privateK, publicK;
 
     private int bitlen = 1024;
 
@@ -16,7 +13,12 @@ public class RSA {
      */
     public RSA(BigInteger newn, BigInteger newe) {
         n = newn;
-        e = newe;
+        publicK = newe;
+    }
+
+    public RSA(BigInteger newn, BigInteger newe, BigInteger newd) {
+        this(newn, newe);
+        privateK = newd;
     }
 
     /**
@@ -24,68 +26,53 @@ public class RSA {
      */
     public RSA(int bits) {
         bitlen = bits;
-        SecureRandom r = new SecureRandom();
-        BigInteger p = new BigInteger(bitlen / 2, 100, r);
-        BigInteger q = new BigInteger(bitlen / 2, 100, r);
-        n = p.multiply(q);
-        BigInteger m = (p.subtract(BigInteger.ONE)).multiply(q
-                .subtract(BigInteger.ONE));
-        e = new BigInteger("3");
-        while (m.gcd(e).intValue() > 1) {
-            e = e.add(new BigInteger("2"));
-        }
-        d = e.modInverse(m);
+        generateKeys();
     }
 
     /**
      * Encrypt the given plaintext message.
      */
     public synchronized String encrypt(String message) {
-        return (new BigInteger(message.getBytes())).modPow(e, n).toString();
+        return (new BigInteger(message.getBytes())).modPow(publicK, n).toString();
     }
 
     /**
      * Encrypt the given plaintext message.
      */
     public synchronized BigInteger encrypt(BigInteger message) {
-        return message.modPow(e, n);
-    }
-
-    public byte[] encrypt(byte[] image) {
-        byte[] encryptedImage = new byte[image.length];
-        for (int i =0 ; i< image.length; i++){
-            encryptedImage[i]= (BigInteger.valueOf(image[i])).modPow(e, n).byteValue();
-
-        }
-        return encryptedImage;
-    }
-
-    public byte[] decrypt(byte[] image) {
-        byte[] decryptedImage = new byte[image.length];
-        System.out.println("decrypt - init : --Size : " + image.length );
-        for (int i =0 ; i< image.length; i++){
-            decryptedImage[i]= (BigInteger.valueOf(image[i])).modPow(d, n).byteValue();
-            if(0 == i%100)
-                System.out.println("decrypt - run : --Size pasted : " + (i/image.length) + "%" );
-
-        }
-
-        return decryptedImage;
-
+        return message.modPow(publicK, n);
     }
 
     /**
      * Decrypt the given ciphertext message.
      */
     public synchronized String decrypt(String message) {
-        return new String((new BigInteger(message)).modPow(d, n).toByteArray());
+        return new String((new BigInteger(message)).modPow(privateK, n).toByteArray());
     }
 
     /**
      * Decrypt the given ciphertext message.
      */
     public synchronized BigInteger decrypt(BigInteger message) {
-        return message.modPow(d, n);
+        return message.modPow(privateK, n);
+    }
+
+
+    /**
+     * Encrypt to transmission Serve -> Cli
+     * @param message String
+     * @return String
+     */
+    public synchronized String encryptP(String message) {
+        return (new BigInteger(message.getBytes())).modPow(privateK, n).toString();
+    }
+    /**
+     * Decrypt to transmission Cli -> Serve
+     * @param message String
+     * @return String
+     */
+    public synchronized String decryptP(String message) {
+        return new String((new BigInteger(message)).modPow(publicK, n).toByteArray());
     }
 
     /**
@@ -98,11 +85,11 @@ public class RSA {
         n = p.multiply(q);
         BigInteger m = (p.subtract(BigInteger.ONE)).multiply(q
                 .subtract(BigInteger.ONE));
-        e = new BigInteger("3");
-        while (m.gcd(e).intValue() > 1) {
-            e = e.add(new BigInteger("2"));
+        publicK = new BigInteger("3");
+        while (m.gcd(publicK).intValue() > 1) {
+            publicK = publicK.add(new BigInteger("2"));
         }
-        d = e.modInverse(m);
+        privateK = publicK.modInverse(m);
     }
 
     /**
@@ -115,25 +102,14 @@ public class RSA {
     /**
      * Return the public key.
      */
-    public synchronized BigInteger getE() {
-        return e;
+    public synchronized BigInteger getPublicK() {
+        return publicK;
     }
 
     /**
-     * Trivial test program.
+     * Return the private key.
      */
-    public static void main(String[] args) {
-        RSA rsa = new RSA(1024);
-
-        String text1 = "Yellow and Black Border Collies";
-        System.out.println("Plaintext: " + text1);
-        BigInteger plaintext = new BigInteger(text1.getBytes());
-
-        BigInteger ciphertext = rsa.encrypt(plaintext);
-        System.out.println("Ciphertext: " + ciphertext);
-        plaintext = rsa.decrypt(ciphertext);
-
-        String text2 = new String(plaintext.toByteArray());
-        System.out.println("Plaintext: " + text2);
+    public synchronized BigInteger getPrivateK() {
+        return privateK;
     }
 }
