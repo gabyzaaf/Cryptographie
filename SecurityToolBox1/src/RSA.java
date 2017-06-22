@@ -2,6 +2,7 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 
 public class RSA {
+    
     private BigInteger n, d, e;
 
     private int bitlen = 1024;
@@ -12,6 +13,10 @@ public class RSA {
     public RSA(BigInteger newn, BigInteger newe) {
         n = newn;
         e = newe;
+    }
+    public RSA(BigInteger newn, BigInteger newe, BigInteger newd) {
+        this(newn, newe);
+        d = newd;
     }
 
     /**
@@ -69,6 +74,14 @@ public class RSA {
 
     }
 
+
+    public synchronized String encryptP(String message) {
+        return (new BigInteger(message.getBytes())).modPow(d, n).toString();
+    }
+    public synchronized String decryptP(String message) {
+        return new String((new BigInteger(message)).modPow(e, n).toByteArray());
+    }
+
     /**
      * Decrypt the given ciphertext message.
      */
@@ -112,6 +125,9 @@ public class RSA {
      */
     public synchronized BigInteger getE() {
         return e;
+    }
+    public synchronized BigInteger getD() {
+        return d;
     }
 
 }
