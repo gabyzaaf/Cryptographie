@@ -13,15 +13,16 @@ public class Main {
 	
 	
 	public static void main(String[] args){
-		
-		if(args[0].equalsIgnoreCase("--help") || args[0].equalsIgnoreCase("-h")){
-			System.out.println("La documentation est présent ici : https://github.com/gabyzaaf/Cryptographie/blob/master/SecurityToolBox1/documentation/start.md \n");
-			System.out.println("1. Vous devez generer le fichier ayant la clee (fichier.key). \n Ce fichier sera à la place au meme endroit que votre fichier jar. \n"
-					+ "2. Vous devez ajouter je fichier jar dans votre IDE pour beneficier des fonctionnalités \n"
-					+ "3. Il existe 3 types de librairie (Hashage,AES,RSA) Exemple de code :  \n"
-					+ "4. AES : https://github.com/gabyzaaf/Cryptographie/blob/master/src/SecurityToolBox1/documentation/Aes_SampleCode.md \n"
-					+ "5. SHA : https://github.com/gabyzaaf/Cryptographie/blob/master/src/SecurityToolBox1/documentation/Sha_SampleCode.md \n"
-					+ "6. RSA : https://github.com/gabyzaaf/Cryptographie/blob/master/src/SecurityToolBox1/documentation/Rsa_SampleCode.md \n");
+		if(args.length > 0){
+			if(args[0].equalsIgnoreCase("--help") || args[0].equalsIgnoreCase("-h")){
+				System.out.println("La documentation est présent ici : https://github.com/gabyzaaf/Cryptographie/blob/master/SecurityToolBox1/documentation/start.md \n");
+				System.out.println("1. Vous devez generer le fichier ayant la clee (fichier.key). \n Ce fichier sera à la place au meme endroit que votre fichier jar. \n"
+						+ "2. Vous devez ajouter je fichier jar dans votre IDE pour beneficier des fonctionnalités \n"
+						+ "3. Il existe 3 types de librairie (Hashage,AES,RSA) Exemple de code :  \n"
+						+ "4. AES : https://github.com/gabyzaaf/Cryptographie/blob/master/src/SecurityToolBox1/documentation/Aes_SampleCode.md \n"
+						+ "5. SHA : https://github.com/gabyzaaf/Cryptographie/blob/master/src/SecurityToolBox1/documentation/Sha_SampleCode.md \n"
+						+ "6. RSA : https://github.com/gabyzaaf/Cryptographie/blob/master/src/SecurityToolBox1/documentation/Rsa_SampleCode.md \n");
+			}	
 		}else{
 		
 			String encryptedString = null;
