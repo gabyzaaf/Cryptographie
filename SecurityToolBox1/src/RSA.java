@@ -14,6 +14,8 @@ import java.security.interfaces.RSAPublicKey;
 
 import javax.crypto.Cipher;
 
+import Exceptions.RsaException;
+
 public class RSA {
     
 	private BigInteger n, d, e;
@@ -24,7 +26,10 @@ public class RSA {
     /**
      * Create an instance that can encrypt using someone elses public key.
      */
-    public RSA(BigInteger newn, BigInteger newe) {
+    public RSA(BigInteger newn, BigInteger newe) throws RsaException{
+    	if(newn == null || newe == null){
+    		throw new RsaException("Les valeurs ne peuvent pas etre null");
+    	}
         n = newn;
         e = newe;
     }
@@ -33,7 +38,10 @@ public class RSA {
     /**
      * Create an instance that can both encrypt and decrypt.
      */
-    public RSA(int bits) {
+    public RSA(int bits) throws RsaException{
+    	if(bits == 0){
+    		throw new RsaException("La vauleur de bit ne peut etre egale à 0");
+    	}
         bitlen = bits;
         SecureRandom r = new SecureRandom();
         BigInteger p = new BigInteger(bitlen / 2, 100, r);
@@ -62,7 +70,10 @@ public class RSA {
         return message.modPow(e, n);
     }
 
-    public byte[] encrypt(byte[] image) {
+    public byte[] encrypt(byte[] image) throws RsaException{
+    	if(image == null){
+    		throw new RsaException("La valeur du tableau d'image est null");
+    	}
         byte[] encryptedImage = new byte[image.length];
         for (int i =0 ; i< image.length; i++){
             encryptedImage[i]= (BigInteger.valueOf(image[i])).modPow(e, n).byteValue();

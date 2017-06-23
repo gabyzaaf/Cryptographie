@@ -6,12 +6,14 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
 import java.math.BigInteger;
 
+import Exceptions.RsaException;
+
 public class Main {
 
 	
 	
 	public static void main(String[] args){
-		
+		/*
 		String encryptedString = null;
 		Scanner scanner = null;
 		
@@ -34,6 +36,15 @@ public class Main {
 				scanner.close();
 			}
 		}
+		*/
+		try {
+			RSA rsa = new RSA(0);
+			rsa.encrypt("hello");
+		} catch (RsaException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 	}
 	
