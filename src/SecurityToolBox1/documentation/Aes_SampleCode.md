@@ -28,7 +28,7 @@
 3. How to decrypt a message from a file : 
 
 ```java
-	try {
+		try {
 			AES aes = new AES();
 			String messageDecrypted = aes.decrypt(null, "secret key", "/var/message.hash");
 		} catch (Exception e) {
