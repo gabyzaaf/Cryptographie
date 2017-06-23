@@ -30,13 +30,27 @@ log4j.appender.file.File=/var/securityToolBox.log
 
 4. When you start the application you need to specifie your configuration path for the JVM :
 
+for relative path : 
 For this you need to use the ***-Dlog4j.configuration={your configuration file path}***
 
+for absolute path : 
+you need to add ***file*** in the JVM like this : 
+***-Dlog4j.configuration=file:{your configuration file path}***
+
 5. For start the application : 
+
+IF it's relative path (for load in the class path) : 
 
 ```bash
 java -jar -Dlog4j.configuration=conf.properties SecurityToolBox.jar
 ```
+
+IF it's the absolute path : 
+
+```bash
+java -jar -Dlog4j.configuration=file:conf.properties SecurityToolBox.jar
+```
+
 
 6. After you need to insert your password and secret key in the prompt.
 
