@@ -1,78 +1,118 @@
 package com.crypto.securityToolBox.com.crypto.securityTool;
 
-
 import java.math.BigInteger;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
-
-import javax.crypto.Cipher;
+import java.security.SecureRandom;
 
 public class RSA {
-    private static KeyPair keyPair;
-    private static KeyPair keyPairCli;
-    private static int keySize = 1024;
+    private BigInteger n, d, e;
 
-    public RSA() {
-        this(keySize);
+    private int bitlen = 1024;
+
+    /**
+     * Create an instance that can encrypt using someone elses public key.
+     */
+    public RSA(BigInteger newn, BigInteger newe) {
+        n = newn;
+        e = newe;
     }
 
-    public RSA(int _keySize) {
-        keySize = _keySize;
-        try {
-            keyPair = buildKeyPair();
-            keyPairCli = buildKeyPair();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+    /**
+     * Create an instance that can both encrypt and decrypt.
+     */
+    public RSA(int bits) {
+        bitlen = bits;
+        SecureRandom r = new SecureRandom();
+        BigInteger p = new BigInteger(bitlen / 2, 100, r);
+        BigInteger q = new BigInteger(bitlen / 2, 100, r);
+        n = p.multiply(q);
+        BigInteger m = (p.subtract(BigInteger.ONE)).multiply(q
+                .subtract(BigInteger.ONE));
+        e = new BigInteger("3");
+        while (m.gcd(e).intValue() > 1) {
+            e = e.add(new BigInteger("2"));
         }
-    }
-
-    public BigInteger getPublicKey() {
-        RSAPublicKey pubKey = (RSAPublicKey) keyPair.getPublic();
-        return pubKey.getModulus();
-    }
-
-    public BigInteger getPrivateKeyToCli() {
-        RSAPrivateKey privKey = (RSAPrivateKey) keyPair.getPrivate();
-        return privKey.getModulus();
-    }
-
-    public static KeyPair buildKeyPair() throws NoSuchAlgorithmException {
-
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-        keyPairGenerator.initialize(keySize);
-        return keyPairGenerator.genKeyPair();
+        d = e.modInverse(m);
     }
 
     /**
-     *
-     * @param privateKey PrivateKey
-     * @param message String
-     * @return byte[]
-     * @throws Exception
+     * Encrypt the given plaintext message.
      */
-    public static byte[] encrypt(PrivateKey privateKey, String message) throws Exception {
-        Cipher cipher = Cipher.getInstance("RSA");
-        cipher.init(Cipher.ENCRYPT_MODE, privateKey);
-
-        return cipher.doFinal(message.getBytes());
+    public synchronized String encrypt(String message) {
+        return (new BigInteger(message.getBytes())).modPow(e, n).toString();
     }
 
     /**
-     *
-     * @param publicKey PublicKey
-     * @param encrypted byte[]
-     * @return byte[]
-     * @throws Exception
+     * Encrypt the given plaintext message.
      */
-    public static byte[] decrypt(PublicKey publicKey, byte [] encrypted) throws Exception {
-        Cipher cipher = Cipher.getInstance("RSA");
-        cipher.init(Cipher.DECRYPT_MODE, publicKey);
+    public synchronized BigInteger encrypt(BigInteger message) {
+        return message.modPow(e, n);
+    }
 
-        return cipher.doFinal(encrypted);
+    public byte[] encrypt(byte[] image) {
+        byte[] encryptedImage = new byte[image.length];
+        for (int i =0 ; i< image.length; i++){
+            encryptedImage[i]= (BigInteger.valueOf(image[i])).modPow(e, n).byteValue();
+
+        }
+        return encryptedImage;
+    }
+
+    public byte[] decrypt(byte[] image) {
+        byte[] decryptedImage = new byte[image.length];
+        System.out.println("decrypt - init : --Size : " + image.length );
+        for (int i =0 ; i< image.length; i++){
+            decryptedImage[i]= (BigInteger.valueOf(image[i])).modPow(d, n).byteValue();
+            if(0 == i%100)
+                System.out.println("decrypt - run : --Size pasted : " + (i/image.length) + "%" );
+
+        }
+
+        return decryptedImage;
+
+    }
+
+    /**
+     * Decrypt the given ciphertext message.
+     */
+    public synchronized String decrypt(String message) {
+        return new String((new BigInteger(message)).modPow(d, n).toByteArray());
+    }
+
+    /**
+     * Decrypt the given ciphertext message.
+     */
+    public synchronized BigInteger decrypt(BigInteger message) {
+        return message.modPow(d, n);
+    }
+
+    /**
+     * Generate a new public and private key set.
+     */
+    public synchronized void generateKeys() {
+        SecureRandom r = new SecureRandom();
+        BigInteger p = new BigInteger(bitlen / 2, 100, r);
+        BigInteger q = new BigInteger(bitlen / 2, 100, r);
+        n = p.multiply(q);
+        BigInteger m = (p.subtract(BigInteger.ONE)).multiply(q
+                .subtract(BigInteger.ONE));
+        e = new BigInteger("3");
+        while (m.gcd(e).intValue() > 1) {
+            e = e.add(new BigInteger("2"));
+        }
+        d = e.modInverse(m);
+    }
+
+    /**
+     * Return the modulus.
+     */
+    public synchronized BigInteger getN() {
+        return n;
+    }
+
+    /**
+     * Return the public key.
+     */
+    public synchronized BigInteger getE() {
+        return e;
     }
 }
