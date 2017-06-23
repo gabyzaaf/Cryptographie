@@ -1,3 +1,4 @@
+
 package SecurityToolBox1.src;
 
 
@@ -17,6 +18,7 @@ public class RSA {
     
 	private BigInteger n, d, e;
 
+
     private int bitlen = 1024;
 
     /**
@@ -26,6 +28,7 @@ public class RSA {
         n = newn;
         e = newe;
     }
+
 
     /**
      * Create an instance that can both encrypt and decrypt.
@@ -82,6 +85,7 @@ public class RSA {
 
     }
 
+
     /**
      * Decrypt the given ciphertext message.
      */
@@ -126,4 +130,5 @@ public class RSA {
     public synchronized BigInteger getE() {
         return e;
     }
+
 }

@@ -1,4 +1,6 @@
+
 package SecurityToolBox1.src;
+
 
 
 import java.io.BufferedReader;
@@ -16,6 +18,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Base64;
+
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -35,6 +38,7 @@ public class AES {
         try {
         	if(myKey == null || myKey.isEmpty()){
         		throw new AesException("La cl�e d'entr�e est vide");
+
         	}
             key = myKey.getBytes("UTF-8");
             sha = MessageDigest.getInstance("SHA-1");
@@ -54,8 +58,8 @@ public class AES {
     {
     	BufferedWriter writer = null;
     	BufferedReader br = null;
-        try
-        {	
+        try{
+
         	
         	if(strToEncrypt == null || strToEncrypt.isEmpty()){
         		throw new Exception("Le message insere est vide");
@@ -63,6 +67,7 @@ public class AES {
         	
         	if(secret == null || secret.isEmpty()){
         		throw new Exception("La clee secret est vide");
+
         	}
             setKey(secret);
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
@@ -73,6 +78,7 @@ public class AES {
             writer.write(Base64.getEncoder().encodeToString(cipher.doFinal(strToEncrypt.getBytes("UTF-8"))));
             writer.close();
             
+
             return Base64.getEncoder().encodeToString(cipher.doFinal(strToEncrypt.getBytes("UTF-8")));
         } 
         catch (Exception e) 
@@ -87,6 +93,7 @@ public class AES {
         }
     }
  
+
     public  String decrypt(String strToDecrypt, String secret,String path) throws Exception 
     {
         try

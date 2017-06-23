@@ -1,3 +1,4 @@
+
 package SecurityToolBox1.src;
 
 
@@ -33,9 +34,6 @@ public class Main {
 				scanner.close();
 			}
 		}
-		
-		
-		
 		
 	}
 	
