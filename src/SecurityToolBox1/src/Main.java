@@ -22,6 +22,8 @@ public class Main {
 						+ "4. AES : https://github.com/gabyzaaf/Cryptographie/blob/master/src/SecurityToolBox1/documentation/Aes_SampleCode.md \n"
 						+ "5. SHA : https://github.com/gabyzaaf/Cryptographie/blob/master/src/SecurityToolBox1/documentation/Sha_SampleCode.md \n"
 						+ "6. RSA : https://github.com/gabyzaaf/Cryptographie/blob/master/src/SecurityToolBox1/documentation/Rsa_SampleCode.md \n");
+			}else{
+				System.out.println("Commande incorrect pour avoir plus d'information veuiller ajouter -h ou --help");
 			}	
 		}else{
 		
