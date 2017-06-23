@@ -36,7 +36,7 @@ For this you need to use the ***-Dlog4j.configuration={your configuration file p
 
 ```bash
 java -jar -Dlog4j.configuration=conf.properties SecurityToolBox.jar
-``
+```
 
 6. After you need to insert your password and secret key in the prompt.
 
