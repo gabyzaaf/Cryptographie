@@ -1,5 +1,13 @@
 # This file will explain how to start the application for generate the key file with the configuration file : 
 
+
+0. For lunch help command with jar file you need to make this : 
+
+You need to use -h or --help : 
+
+```bash
+java -jar -Dlog4j.configuration=conf.properties SecurityToolBox.jar -h
+```
 1. You need to create your own configuration file like this : 
 
 ```bash
